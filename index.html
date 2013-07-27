@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<title>Icinga to go</title>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Icinga to go</h1>
+<ul id="output" />
+<script type="text/javascript">
+var url = '/icinga/cgi-bin/status.cgi?jsonoutput';
+jQuery.getJSON(url, function(data) {
+	var html = '';
+	var lasthost = ''; var firsthost = true;
+	jQuery.each(data.status.service_status, function(index, elem) {
+		if (elem.host_name != lasthost) {
+			if (!firsthost)
+			{
+				html += '</ul></li>';
+			}
+			html += '<li>' + elem.host_display_name + '<ul>';
+			firsthost = false;
+			lasthost = elem.host_name;
+		}
+		html += '<li>' + elem.service_display_name + ': ' + elem.status + '</li>';
+	});
+	if (html.length > 0) html += '</ul></li>';
+	jQuery('#output').html(html);
+});
+</script>
+</body>
+</html>
+
