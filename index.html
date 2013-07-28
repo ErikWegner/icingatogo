@@ -3,6 +3,7 @@
 <head>
 <title>Icinga to go</title>
 <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+<link rel="stylesheet" href="i.css"/>
 </head>
 <body>
 <h1>Icinga to go</h1>
@@ -41,6 +42,7 @@ var createHeadLinks = function(statusgroups) {
 	var parent = jQuery('#headlinks');
 	jQuery.each(statuslist, function(i, e) {
 		var a = document.createElement('a');
+		a.className = i;
 		a.href = '#' + i;
 		a.innerText = i;
 		if (e.Long in statusgroups) a.innerText += ' ' + statusgroups[e.Long].length;

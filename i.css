@@ -1,0 +1,24 @@
+.CRIT {
+    background-color: #FF3300;
+    color: #fff;
+}
+
+.WARN {
+    background-color: #FFDA9F;
+    color: #fff;
+}
+
+.OK {
+    background-color: #00CC33;
+    color: #fff;
+}
+
+.UNK {
+    background-color: #E066FF;
+    color: #fff;
+}
+
+.PEND {
+    background-color: #acacac;
+    color: #fff;    
+}
