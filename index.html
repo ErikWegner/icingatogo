@@ -16,35 +16,52 @@ var url = '/icinga/cgi-bin/status.cgi?jsonoutput';
 <script type="text/javascript">
 var statuslist = {
 	'CRIT' : {
-		'Long' : 'Critial'
+		'Long' : 'CRITICAL',
+		'Text' : 'Critial'
 	},
 	'WARN' : {
-		'Long' : 'Warning'
+		'Long' : 'WARNING',
+		'Text' : 'Warning'
 	},
 	'OK' : {
-		'Long' : 'Ok'
+		'Long' : 'OK',
+		'Text' : 'Ok'
 	},
 	'UNK' : {
-		'Long' : 'Unknown'
+		'Long' : 'UNKNOWN',
+		'Text' : 'Unknown'
 	},
 	'PEND' : {
-		'Long' : 'Pending'
+		'Long' : 'PENDING',
+		'Text' : 'Pending'
 	}
 }
 
-var createHeadLinks = function() {
+var createHeadLinks = function(statusgroups) {
 	var parent = jQuery('#headlinks');
 	jQuery.each(statuslist, function(i, e) {
 		var a = document.createElement('a');
 		a.href = '#' + i;
 		a.innerText = i;
+		if (e.Long in statusgroups) a.innerText += ' ' + statusgroups[e.Long].length;
 		parent.append(a);
 		parent.append(document.createTextNode(' '));
 		});
 }
 
+var groupByStatus = function(data) {
+	var groups = []
+	jQuery.each(data, function(i,e) {
+		group = e.status;
+		if (!(group in groups)) groups[group] = [];
+		groups[group].push(e);
+		});
+	return groups;
+}
+
 var processResult = function(data) {
-	createHeadLinks();
+	statusgroups = groupByStatus(data.status.service_status);
+	createHeadLinks(statusgroups);
 	
 	var html = '';
 	var lasthost = ''; var firsthost = true;
