@@ -8,7 +8,9 @@
 <body>
 <h1>Icinga to go</h1>
 <div id="headlinks"></div>
-
+<script type="text/html" id="template">
+	<h2><a name="{ANAME}"/>{STATUSNAME}</h2>
+</script>
 <script type="text/javascript" src="demo.js"></script>
 <script type="text/javascript">
 var demo = true;
@@ -51,10 +53,10 @@ var createHeadLinks = function(statusgroups) {
 		});
 }
 
-var groupByStatus = function(data) {
-	var groups = []
+var groupByAttr = function(data, attr) {
+	var groups = {}
 	jQuery.each(data, function(i,e) {
-		group = e.status;
+		group = e[attr];
 		if (!(group in groups)) groups[group] = [];
 		groups[group].push(e);
 		});
@@ -62,25 +64,33 @@ var groupByStatus = function(data) {
 }
 
 var processResult = function(data) {
-	statusgroups = groupByStatus(data.status.service_status);
+	var statusgroups = groupByAttr(data.status.service_status, 'status');
 	createHeadLinks(statusgroups);
 	
 	var html = '';
 	var lasthost = ''; var firsthost = true;
-	jQuery.each(data.status.service_status, function(index, elem) {
-		if (elem.host_name != lasthost) {
-			if (!firsthost)
-			{
-				html += '</ul></li>';
-			}
-			html += '<li>' + elem.host_display_name + '<ul>';
-			firsthost = false;
-			lasthost = elem.host_name;
+	jQuery.each(statuslist, function(index, elem) {
+		if (elem.Long in statusgroups) {
+			var setAnchor = true;
+			var hostgroups = groupByAttr(statusgroups[elem.Long], 'host_name');
+			jQuery.each(hostgroups, function(host, servicelist) {
+				var hosthtml = '';
+				jQuery.each(servicelist, function(i, service) {
+						hosthtml += '<li>' + service.service_description + '</li>';
+					});
+				hosthtml = '<li>';
+				if (setAnchor) {
+					setAnchor = false;
+					hosthtml += '<a name="' + index + '" />';
+				}
+				hosthtml += host + '<ul>' + hosthtml + '</ul>';
+				html += hosthtml;
+			});
 		}
-		html += '<li>' + elem.service_display_name + ': ' + elem.status + '</li>';
 	});
-	if (html.length > 0) html += '</ul></li>';
-	jQuery('#output').html(html);
+	html = '<ul>' + html + '</ul>';
+
+	jQuery('#headlinks').after(html);
 }
 
 if (demo) {processResult(response)} else
