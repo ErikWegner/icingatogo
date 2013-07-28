@@ -2,14 +2,50 @@
 <html>
 <head>
 <title>Icinga to go</title>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
 </head>
 <body>
 <h1>Icinga to go</h1>
-<ul id="output" />
+<div id="headlinks"></div>
+
+<script type="text/javascript" src="demo.js"></script>
 <script type="text/javascript">
+var demo = true;
 var url = '/icinga/cgi-bin/status.cgi?jsonoutput';
-jQuery.getJSON(url, function(data) {
+</script>
+<script type="text/javascript">
+var statuslist = {
+	'CRIT' : {
+		'Long' : 'Critial'
+	},
+	'WARN' : {
+		'Long' : 'Warning'
+	},
+	'OK' : {
+		'Long' : 'Ok'
+	},
+	'UNK' : {
+		'Long' : 'Unknown'
+	},
+	'PEND' : {
+		'Long' : 'Pending'
+	}
+}
+
+var createHeadLinks = function() {
+	var parent = jQuery('#headlinks');
+	jQuery.each(statuslist, function(i, e) {
+		var a = document.createElement('a');
+		a.href = '#' + i;
+		a.innerText = i;
+		parent.append(a);
+		parent.append(document.createTextNode(' '));
+		});
+}
+
+var processResult = function(data) {
+	createHeadLinks();
+	
 	var html = '';
 	var lasthost = ''; var firsthost = true;
 	jQuery.each(data.status.service_status, function(index, elem) {
@@ -26,7 +62,11 @@ jQuery.getJSON(url, function(data) {
 	});
 	if (html.length > 0) html += '</ul></li>';
 	jQuery('#output').html(html);
-});
+}
+
+if (demo) {processResult(response)} else
+jQuery.getJSON(url, processResult);
+
 </script>
 </body>
 </html>
