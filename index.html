@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="i.css"/>
 </head>
 <body>
-<h1>Icinga to go</h1>
+<h1><a name="top">Icinga to go</a></h1>
 <div id="headlinks"></div>
 <script type="text/html" id="template">
 	<h2><a name="{ANAME}"/>{STATUSNAME}</h2>
@@ -68,27 +68,33 @@ var processResult = function(data) {
 	createHeadLinks(statusgroups);
 	
 	var html = '';
-	var lasthost = ''; var firsthost = true;
+	var groupheadhtml = jQuery('#template').html().trim();
+	var returntophtml = '<a href="#top" class="rttop">TOP</a>';
+	var BR = '<br/>';
+	
 	jQuery.each(statuslist, function(index, elem) {
 		if (elem.Long in statusgroups) {
-			var setAnchor = true;
+			var liclass = index;
+			html += groupheadhtml
+					.replace('{ANAME}', index)
+					.replace('{STATUSNAME}', elem.Text);
+			html += returntophtml;
 			var hostgroups = groupByAttr(statusgroups[elem.Long], 'host_name');
 			jQuery.each(hostgroups, function(host, servicelist) {
-				var hosthtml = '';
+				var hosthtml = '<h3>' + host + '</h3>';
+				hosthtml += '<ul>';
 				jQuery.each(servicelist, function(i, service) {
-						hosthtml += '<li>' + service.service_description + '</li>';
+						hosthtml += '<li class="' + liclass + '">' + service.service_display_name + BR;
+						hosthtml += 'Last check: ' + service.last_check + BR;
+						hosthtml += 'Info: ' + service.status_information + BR;
+						hosthtml += '</li>';
 					});
-				hosthtml = '<li>';
-				if (setAnchor) {
-					setAnchor = false;
-					hosthtml += '<a name="' + index + '" />';
-				}
-				hosthtml += host + '<ul>' + hosthtml + '</ul>';
+				hosthtml += '</ul>';
 				html += hosthtml;
 			});
+			html += returntophtml;
 		}
 	});
-	html = '<ul>' + html + '</ul>';
 
 	jQuery('#headlinks').after(html);
 }

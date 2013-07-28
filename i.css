@@ -5,7 +5,7 @@
 
 .WARN {
     background-color: #FFDA9F;
-    color: #fff;
+    color: #000;
 }
 
 .OK {
@@ -21,4 +21,16 @@
 .PEND {
     background-color: #acacac;
     color: #fff;    
+}
+
+h1, h2, h3 {
+    font-family: sans-serif;
+}
+
+a.rttop {
+    float: right;
+}
+
+ul {
+    padding-left: 0;
 }
