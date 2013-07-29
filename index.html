@@ -1,9 +1,11 @@
 <!doctype html>
 <html>
 <head>
-<title>Icinga to go</title>
-<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
-<link rel="stylesheet" href="i.css"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, target-densitydpi=device-dpi"/> 
+	<meta name="HandheldFriendly" content="true"/>
+	<title>Icinga to go</title>
+	<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+	<link rel="stylesheet" href="i.css"/>
 </head>
 <body>
 <h1><a name="top">Icinga to go</a></h1>
@@ -46,8 +48,8 @@ var createHeadLinks = function(statusgroups) {
 		var a = document.createElement('a');
 		a.className = i;
 		a.href = '#' + i;
-		a.innerText = i;
-		if (e.Long in statusgroups) a.innerText += ' ' + statusgroups[e.Long].length;
+		a.innerHTML = i;
+		if (e.Long in statusgroups) a.innerHTML += ' ' + statusgroups[e.Long].length;
 		parent.append(a);
 		parent.append(document.createTextNode(' '));
 		});
