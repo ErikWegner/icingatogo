@@ -1,3 +1,12 @@
+var StatusShort = {
+    CRITICAL: 'CRIT',
+    WARNING: 'WARN',
+    UNKNOWN : 'UNK',
+    PENDING: 'PEND',
+    OK: 'OK',
+    UP: 'UP'
+}
+
 var groupByAttr = function(data, attr) {
 	var groups = {}
 	jQuery.each(data, function(i,e) {
@@ -11,7 +20,7 @@ var groupByAttr = function(data, attr) {
 var QueryHosts = function() {
     var processResult = function(data) {
 	var html = '';
-        var template = '<tr>\
+        var template = '<tr class="{STATUSSHORT}">\
                         <td class="hs">{HOSTNAME}</td>\
                         <td>{STATUS}</td>\
                        </tr>\n';
@@ -19,7 +28,8 @@ var QueryHosts = function() {
 	jQuery.each(data.status.host_status, function(index, elem) {
             html += template.
                 replace('{HOSTNAME}', elem.host_display_name).
-                replace('{STATUS}', elem.status);
+                replace('{STATUS}', elem.status).
+                replace('{STATUSSHORT}', StatusShort[elem.status]);
 	});
 
 	jQuery('tbody#hosts').html(html);
@@ -32,10 +42,10 @@ var QueryHosts = function() {
 var QueryServices = function() {
     var processResult = function(data) {
 	var html = '';
-        var template = '<tr>\
-                        <td class="hs">{HOSTNAME}</td>\
+        var template = '<tr class="{STATUSSHORT}">\
+                        <td>{HOSTNAME}</td>\
                         <td class="srv">{SERVNAME}</td>\
-                        <td>{STATUS}</td>\
+                        <td class="tdss">{STATUS}</td>\
                        </tr>\n\
                        <tr>\
                         <td></td>\
@@ -53,7 +63,8 @@ var QueryServices = function() {
                 replace('{SERVNAME}', elem.service_display_name).
                 replace('{LASTCHECK}', elem.last_check).
                 replace('{INFO}', elem.status_information).
-                replace('{STATUS}', elem.status);
+                replace('{STATUS}', elem.status).
+                replace('{STATUSSHORT}', StatusShort[elem.status]);
             prevhost = elem.host_display_name;
 	});
 

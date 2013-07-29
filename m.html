@@ -30,8 +30,7 @@
         <div data-role="navbar" data-iconpos="top">
             <ul>
                 <li>
-                    <a href="#page1" data-transition="fade" data-theme="" data-icon="bars"
-                    class="ui-btn-active ui-state-persist">
+                    <a href="#page1" data-transition="fade" data-theme="" data-icon="bars">
                         Hosts
                     </a>
                 </li>
@@ -72,8 +71,7 @@
         <div data-role="navbar" data-iconpos="top">
             <ul>
                 <li>
-                    <a href="#page1" data-transition="fade" data-theme="" data-icon="bars"
-                    class="ui-btn-active ui-state-persist">
+                    <a href="#page1" data-transition="fade" data-theme="" data-icon="bars">
                         Hosts
                     </a>
                 </li>
@@ -93,11 +91,6 @@
 </div>
 
 
-<h1><a name="top">Icinga to go</a></h1>
-<div id="headlinks"></div>
-<script type="text/html" id="template">
-	<h2><a name="{ANAME}"/>{STATUSNAME}</h2>
-</script>
 <script type="text/javascript" src="demo.js"></script>
 <script type="text/javascript" src="demohost.js"></script>
 <script type="text/javascript">
@@ -105,31 +98,9 @@ var demo = true;
 var url = '/icinga/cgi-bin/status.cgi';
 </script>
 <script type="text/javascript" src="i2go.js"></script>
-
 <script type="text/javascript">
-var statuslist = {
-	'CRIT' : {
-		'Long' : 'CRITICAL',
-		'Text' : 'Critial'
-	},
-	'WARN' : {
-		'Long' : 'WARNING',
-		'Text' : 'Warning'
-	},
-	'OK' : {
-		'Long' : 'OK',
-		'Text' : 'Ok'
-	},
-	'UNK' : {
-		'Long' : 'UNKNOWN',
-		'Text' : 'Unknown'
-	},
-	'PEND' : {
-		'Long' : 'PENDING',
-		'Text' : 'Pending'
-	}
-}
-QueryHosts();
+$('#page1').on('pagebeforeshow', QueryHosts);
+$('#page2').on('pagebeforeshow', QueryServices);
 </script>
 </body>
 </html>

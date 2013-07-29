@@ -8,7 +8,7 @@
     color: #000;
 }
 
-.OK {
+.OK, .UP {
     background-color: #00CC33;
     color: #fff;
 }
@@ -39,3 +39,6 @@ li {
     margin-bottom: 1ex;
     padding: 1px;
 }
+
+td.tdss {text-align: center}
+thead td {text-align: center; font-weight: bold;}
