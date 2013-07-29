@@ -26,5 +26,40 @@ var QueryHosts = function() {
     }
 
     if (demo) {processResult(hostresponse)} else
-    jQuery.getJSON(url + '?style=hostdetail&jsonoutput=1', processResult);
+    jQuery.getJSON(url + '?style=hostdetail&jsonoutput', processResult);
+}
+
+var QueryServices = function() {
+    var processResult = function(data) {
+	var html = '';
+        var template = '<tr>\
+                        <td class="hs">{HOSTNAME}</td>\
+                        <td class="srv">{SERVNAME}</td>\
+                        <td>{STATUS}</td>\
+                       </tr>\n\
+                       <tr>\
+                        <td></td>\
+                        <td colspan="2">{LASTCHECK}</td>\
+                       </tr>\
+                       <tr>\
+                        <td></td>\
+                        <td colspan="2">{INFO}</td>\
+                       </tr>\
+                       ';
+	var prevhost = '';
+	jQuery.each(data.status.service_status, function(index, elem) {
+            html += template.
+                replace('{HOSTNAME}', prevhost == elem.host_display_name ? '' : elem.host_display_name).
+                replace('{SERVNAME}', elem.service_display_name).
+                replace('{LASTCHECK}', elem.last_check).
+                replace('{INFO}', elem.status_information).
+                replace('{STATUS}', elem.status);
+            prevhost = elem.host_display_name;
+	});
+
+	jQuery('tbody#services').html(html);
+    }
+
+    if (demo) {processResult(response)} else
+    jQuery.getJSON(url + '?style=servicedetail&jsonoutput', processResult);
 }
