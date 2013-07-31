@@ -26,6 +26,20 @@ var QueryOverview = function () {
         jQuery('#totalsHosts table td.cri').html(overview.hosts_down + '/' + totalhosts);
         jQuery('#totalsHosts table td.unr').html(overview.hosts_unreachable + '/' + totalhosts);
         jQuery('#totalsHosts table td.pend').html(overview.hosts_pending + '/' + totalhosts);
+        
+        var totalservices = overview.total_services;
+        jQuery('#totalsServices table td.ok').html(overview.services_ok + '/' + totalservices);
+        jQuery('#totalsServices table td.warn').html(overview.services_warning + '/' + totalservices);
+        jQuery('#totalsServices table td.unkn').html(overview.services_unknown + '/' + totalservices);
+        jQuery('#totalsServices table td.cri').html(overview.services_critical + '/' + totalservices);
+        jQuery('#totalsServices table td.pend').html(overview.services_pending + '/' + totalservices);
+        
+        var allok = totalhosts == overview.hosts_up && totalservices == overview.services_ok;
+        jQuery('#all-ok').show(allok);
+        jQuery('#tableOverview').show(!allok);
+        if (!allok) {
+            
+        }
     }
 
     if (demo) {processResult(tacresponse)} else
