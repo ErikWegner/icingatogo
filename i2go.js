@@ -17,6 +17,21 @@ var groupByAttr = function(data, attr) {
 	return groups;
 }
 
+var QueryOverview = function () {
+    var processResult = function(data) {
+        var overview = data.tac.tac_overview
+
+        var totalhosts = overview.total_hosts;
+        jQuery('#totalsHosts table td.ok').html(overview.hosts_up + '/' + totalhosts);
+        jQuery('#totalsHosts table td.cri').html(overview.hosts_down + '/' + totalhosts);
+        jQuery('#totalsHosts table td.unr').html(overview.hosts_unreachable + '/' + totalhosts);
+        jQuery('#totalsHosts table td.pend').html(overview.hosts_pending + '/' + totalhosts);
+    }
+
+    if (demo) {processResult(tacresponse)} else
+    jQuery.getJSON(url + 'tac.cgi?jsonoutput', processResult);
+}
+
 var QueryHosts = function() {
     var processResult = function(data) {
 	var html = '';
@@ -36,7 +51,7 @@ var QueryHosts = function() {
     }
 
     if (demo) {processResult(hostresponse)} else
-    jQuery.getJSON(url + '?style=hostdetail&jsonoutput', processResult);
+    jQuery.getJSON(url + 'status.cgi?style=hostdetail&jsonoutput', processResult);
 }
 
 var QueryServices = function() {
@@ -72,5 +87,5 @@ var QueryServices = function() {
     }
 
     if (demo) {processResult(response)} else
-    jQuery.getJSON(url + '?style=servicedetail&jsonoutput', processResult);
+    jQuery.getJSON(url + 'status.cgi?style=servicedetail&jsonoutput', processResult);
 }
