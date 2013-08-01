@@ -163,15 +163,13 @@
 </div>
 
 
-<script type="text/javascript" src="demo.js"></script>
-<script type="text/javascript" src="demohost.js"></script>
-<script type="text/javascript" src="demotac.js"></script>
 <script type="text/javascript">
-var demo = true;
 var url = '/icinga/cgi-bin/';
+var demo = false;
 </script>
 <script type="text/javascript" src="i2go.js"></script>
 <script type="text/javascript">
+$('#page0').on('pagebeforeshow', QueryOverview);
 $('#page1').on('pagebeforeshow', QueryHosts);
 $('#page2').on('pagebeforeshow', QueryServices);
 </script>
