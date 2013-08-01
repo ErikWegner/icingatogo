@@ -4,7 +4,8 @@ var StatusShort = {
     UNKNOWN : 'UNK',
     PENDING: 'PEND',
     OK: 'OK',
-    UP: 'UP'
+    UP: 'UP',
+    DOWN: 'DOWN'
 }
 
 var groupByAttr = function(data, attr) {
@@ -35,8 +36,8 @@ var QueryOverview = function () {
         jQuery('#totalsServices table td.pend').html(overview.services_pending + '/' + totalservices);
         
         var allok = totalhosts == overview.hosts_up && totalservices == overview.services_ok;
-        jQuery('#all-ok').show(allok);
-        jQuery('#tableOverview').show(!allok);
+        jQuery('#all-ok').toggle(allok);
+        jQuery('#tableOverview').toogle(!allok);
         if (!allok) {
             
         }

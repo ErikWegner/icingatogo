@@ -172,6 +172,7 @@ var url = '/icinga/cgi-bin/';
 </script>
 <script type="text/javascript" src="i2go.js"></script>
 <script type="text/javascript">
+$('#page0').on('pagebeforeshow', QueryOverview);
 $('#page1').on('pagebeforeshow', QueryHosts);
 $('#page2').on('pagebeforeshow', QueryServices);
 </script>
