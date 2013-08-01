@@ -1,4 +1,4 @@
-.CRIT {
+.CRIT, .DOWN {
     background-color: #FF3300;
     color: #fff;
 }
