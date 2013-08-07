@@ -20,31 +20,66 @@ var groupByAttr = function(data, attr) {
 
 var QueryOverview = function () {
     var processResult = function(data) {
-        var overview = data.tac.tac_overview
+        var totalhosts = data.status.host_status.length;
+	var hosterrors = '';
+	var hostscount = {UP:0,DOWN:0,PENDING:0,UNREACHABLE:0};
+	for (h in data.status.host_status) {
+	    var host = data.status.host_status[h];
+	    hostscount[host.status] += 1;
+	    if (host.status != "UP") {
+		hosterrors += '<tr><td>' + host.host_display_name + '</td><td class="' + host.status + '">' + host.status + '</td></tr>';
+	    }
+	}
+	
+        jQuery('#totalsHosts table td.ok').html(hostscount.UP + '/' + totalhosts);
+        jQuery('#totalsHosts table td.cri').html(hostscount.DOWN + '/' + totalhosts);
+        jQuery('#totalsHosts table td.unr').html(hostscount.UNREACHABLE + '/' + totalhosts);
+        jQuery('#totalsHosts table td.pend').html(hostscount.PENDING + '/' + totalhosts);
+        
+        var totalservices = data.status.service_status.length;
+	var serviceserrors = '';
+	var servicescount = {OK:0,WARNING:0,UNKNOWN:0,CRITICAL:0,PENDING:0};
+	var lasthost = '';
+	for (s in data.status.service_status) {
+	    var service = data.status.service_status[s];
+	    servicescount[service.status] += 1;
+	    if (service.status != 'OK') {
+		serviceserrors += '<tr>';
+		if (lasthost != service.host_name) {
+		    serviceserrors += '<td>' + service.host_display_name + '</td>';
+		    lasthost = service.host_name;
+		} else serviceserrors += '<td/>'
+		serviceserrors += '<td class="' + StatusShort[service.status] + '">' + service.service_display_name + '</td></tr>';
+	    }
+	}
 
-        var totalhosts = overview.total_hosts;
-        jQuery('#totalsHosts table td.ok').html(overview.hosts_up + '/' + totalhosts);
-        jQuery('#totalsHosts table td.cri').html(overview.hosts_down + '/' + totalhosts);
-        jQuery('#totalsHosts table td.unr').html(overview.hosts_unreachable + '/' + totalhosts);
-        jQuery('#totalsHosts table td.pend').html(overview.hosts_pending + '/' + totalhosts);
+        jQuery('#totalsServices table td.ok').html(servicescount.OK + '/' + totalservices);
+        jQuery('#totalsServices table td.warn').html(servicescount.WARNING + '/' + totalservices);
+        jQuery('#totalsServices table td.unkn').html(servicescount.UNKNOWN + '/' + totalservices);
+        jQuery('#totalsServices table td.cri').html(servicescount.CRITICAL + '/' + totalservices);
+        jQuery('#totalsServices table td.pend').html(servicescount.PENDING + '/' + totalservices);
         
-        var totalservices = overview.total_services;
-        jQuery('#totalsServices table td.ok').html(overview.services_ok + '/' + totalservices);
-        jQuery('#totalsServices table td.warn').html(overview.services_warning + '/' + totalservices);
-        jQuery('#totalsServices table td.unkn').html(overview.services_unknown + '/' + totalservices);
-        jQuery('#totalsServices table td.cri').html(overview.services_critical + '/' + totalservices);
-        jQuery('#totalsServices table td.pend').html(overview.services_pending + '/' + totalservices);
-        
-        var allok = totalhosts == overview.hosts_up && totalservices == overview.services_ok;
+        var allok = totalhosts == hostscount.UP && totalservices == servicescount.OK;
         jQuery('#all-ok').toggle(allok);
-        jQuery('#tableOverview').toggle(!allok);
+        var table = jQuery('#tableOverview').toggle(!allok);
         if (!allok) {
+	    var html = '';
+	    if (hosterrors != '') {
+		html += '<h3>Host errors</h3>';
+		html += '<table id="tableHosts">'+hosterrors+'</table>';
+	    }
             
+	    if (serviceserrors != '') {
+		html += '<h3>Service errors</h3>';
+		html += '<table id="tableServices">' + serviceserrors + '</table>';
+	    }
+	    
+	    table.html(html);
         }
     }
 
-    if (demo) {processResult(tacresponse)} else
-    jQuery.getJSON(url + 'tac.cgi?jsonoutput', processResult);
+    if (demo) {processResult(completeresponse)} else
+    jQuery.getJSON(url + 'status.cgi?host=all&style=hostservicedetail&jsonoutput', processResult);
 }
 
 var QueryHosts = function() {
