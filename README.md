@@ -15,8 +15,12 @@ Simplified icinga status list esp. for mobile use
     </script>
     ```
   
-    Set the variable demo to false and change the url to point to your installation if required.
+    Set the variable `demo` to `false` and change the url to the one of your Icinga/Nagios installation if required.
 
-3. Open the file m.html and repeat the previous step.
+3. Open the file m.html and repeat the previous step, but do not include the status.cgi in the url.
 
 4. Point your browser to your webserver and installation directory. The index.html will load first. To go to the jQuery mobile interface, append m.html to the directory path.
+
+## Screenshots
+
+Screenshot can be found at the announcement page: https://ewus.de/en/sw/en/icinga-go
