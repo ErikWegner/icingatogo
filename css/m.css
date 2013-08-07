@@ -1,0 +1,59 @@
+.CRIT, .DOWN {
+    background-color: #FF3300;
+}
+
+.WARN {
+    background-color: #FFDA9F;
+}
+
+.OK, .UP {
+    background-color: #00CC33;
+}
+
+.UNK {
+    background-color: #E066FF;
+}
+
+.PEND {
+    background-color: #acacac;
+}
+
+h1, h2, h3 {
+    font-family: sans-serif;
+}
+
+a.rttop {
+/*    float: right;*/
+}
+
+ul {
+    padding-left: 0;
+}
+
+li {
+    margin-bottom: 1ex;
+    padding: 1px;
+}
+
+td.tdss {text-align: center}
+thead td {text-align: center; font-weight: bold;}
+
+#totalsHosts th, #totalsServices th {
+  background: #707677;
+  color: white;
+}
+
+#totalsHosts td, #totalsServices td {
+  text-align: center;
+}
+
+.ok { background: #00cc33 }
+.cri { background: #ff3300 }
+.unr, .pend { 
+  background: #e9e9e9;
+  color: black;
+}
+.unkn { background: #bf44b2 }
+.warn { background: #ffa500 }
+
+table.t100 { width: 100%;}
