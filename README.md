@@ -8,7 +8,7 @@ Simplified icinga status list esp. for mobile use
 
 2. Open the file index.html and find the section:
 
-    ```JavaScript
+    ```HTML
     <script type="text/javascript">
     var demo = true;
     var url = '/icinga/cgi-bin/status.cgi?jsonoutput';
