@@ -37,7 +37,7 @@ var QueryOverview = function () {
         
         var allok = totalhosts == overview.hosts_up && totalservices == overview.services_ok;
         jQuery('#all-ok').toggle(allok);
-        jQuery('#tableOverview').toogle(!allok);
+        jQuery('#tableOverview').toggle(!allok);
         if (!allok) {
             
         }
