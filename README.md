@@ -23,4 +23,4 @@ Simplified icinga status list esp. for mobile use
 
 ## Screenshots
 
-Screenshot can be found at the announcement page: https://ewus.de/en/sw/en/icinga-go
+Screenshot can be found at the announcement page: http://ewus.de/en/sw/en/icinga-go
