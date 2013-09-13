@@ -18,6 +18,50 @@ var groupByAttr = function(data, attr) {
 	return groups;
 }
 
+function sendCommand(command, hostname, servicename, src) {
+  var resetSrc = function() {};
+  if (src != null) {
+    src = jQuery(src);
+    src.after('<img class="command" src="css/images/ajax-loader.gif" width="14" height="14"/>').hide();
+    resetSrc = function() {
+      src.show();
+      src.nextAll("img").remove();
+    }
+  }
+
+  // basic variables
+  hostname = hostname.toLowerCase();
+  cmds = {'ack': 33, 'reschedule': 96};
+  cmd_url = url + 'cmd.cgi';
+  service_query = '';
+
+  // run command for service not for host
+  if ( servicename != undefined ) {
+    cmds = {'ack': 34, 'reschedule': 7};
+    servicename = servicename.replace(/ /, "+");
+    service_query = '&service='+servicename;
+  }
+
+  // Acknowledge host or service problem
+  if ( command == 'ack' ) {
+    window.location.href = (cmd_url+'?cmd_typ='+cmds[command]+'&host='+hostname+service_query);
+
+  // Reschedule next check of host or service
+  } else if ( command == 'reschedule' ) {
+    var t = new Date();
+    var time = z(t.getDate()) + '-' + z(t.getMonth()+1) + '-' + z(t.getFullYear()) + '+' + z(t.getHours()) + '%3A' + z(t.getMinutes()) + '%3A' + z(t.getSeconds());
+
+    var dataString = 'cmd_typ=' + cmds[command] + '&cmd_mod=2&host=' + hostname + service_query + '&start_time=' + time + '&force_check=on&submit=Commit';
+    jQuery.post(cmd_url, dataString, resetSrc);
+  }
+}
+
+var z = function (num) {
+  if ( num < 10 ) {
+    num = '0'+num;
+  }
+  return num;
+}
 var QueryOverview = function () {
     var processResult = function(data) {
         var totalhosts = data.status.host_status.length;
@@ -46,10 +90,14 @@ var QueryOverview = function () {
 	    if (service.status != 'OK') {
 		serviceserrors += '<tr>';
 		if (lasthost != service.host_name) {
-		    serviceserrors += '<td>' + service.host_display_name + '</td>';
+		    serviceserrors += '<td class="servicehost">' + service.host_display_name + '</td>';
 		    lasthost = service.host_name;
 		} else serviceserrors += '<td/>'
-		serviceserrors += '<td class="' + StatusShort[service.status] + '">' + service.service_display_name + '</td></tr>';
+		var ackcmd =  "sendCommand(&quot;ack&quot;,&quot;" + encodeURI(service.host_name) + "&quot;,&quot;" + encodeURI(service.service_display_name) + "&quot;);";
+		var ack = '<a class="command ack" href="#" onclick="' + ackcmd + '"><img src="img/ack.png" width="14" height="14" alt="Aknowledge" /></a>';
+		var recheckcmd = "sendCommand(&quot;reschedule&quot;,&quot;" + encodeURI(service.host_name) + "&quot;,&quot;" + encodeURI(service.service_display_name) + "&quot;, this);";
+		var recheck = '<a class="command recheck" href="#" onclick="' + recheckcmd + '"><img src="img/rck.png" width="14" height="14" alt="Recheck" /></a>';
+		serviceserrors += '<td class="' + StatusShort[service.status] + '">' + service.service_display_name + '</td><td>' + recheck + ack + '</td></tr>';
 	    }
 	}
 

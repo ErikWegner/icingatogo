@@ -57,3 +57,6 @@ thead td {text-align: center; font-weight: bold;}
 .warn { background: #ffa500 }
 
 table.t100 { width: 100%;}
+
+td.servicehost {background-color:#ddd}
+a.command {text-decoration: none;color:black;padding:0 4px;margin-right:1ex;}
