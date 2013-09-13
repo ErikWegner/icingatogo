@@ -97,7 +97,8 @@ var QueryOverview = function () {
 		var ack = '<a class="command ack" href="#" onclick="' + ackcmd + '"><img src="img/ack.png" width="14" height="14" alt="Aknowledge" /></a>';
 		var recheckcmd = "sendCommand(&quot;reschedule&quot;,&quot;" + encodeURI(service.host_name) + "&quot;,&quot;" + encodeURI(service.service_display_name) + "&quot;, this);";
 		var recheck = '<a class="command recheck" href="#" onclick="' + recheckcmd + '"><img src="img/rck.png" width="14" height="14" alt="Recheck" /></a>';
-		serviceserrors += '<td class="' + StatusShort[service.status] + '">' + service.service_display_name + '</td><td>' + recheck + ack + '</td></tr>';
+		var servicelink = '<a target="_blank" href="' + url + "extinfo.cgi?type=2&amp;host=" + encodeURI(service.host_name) + "&amp;service=" + encodeURI(service.service_display_name) + '">' + service.service_display_name + "</a>";
+		serviceserrors += '<td class="' + StatusShort[service.status] + '">' + servicelink + '</td><td>' + recheck + ack + '</td></tr>';
 	    }
 	}
 
