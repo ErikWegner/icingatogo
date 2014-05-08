@@ -49,7 +49,7 @@ function sendCommand(command, hostname, servicename, src) {
   // Reschedule next check of host or service
   } else if ( command == 'reschedule' ) {
     var t = new Date();
-    var time = z(t.getDate()) + '-' + z(t.getMonth()+1) + '-' + z(t.getFullYear()) + '+' + z(t.getHours()) + '%3A' + z(t.getMinutes()) + '%3A' + z(t.getSeconds());
+    var time = z(t.getFullYear()) + '-' + z(t.getMonth()+1) + '-' + z(t.getDate()) + '+' + z(t.getHours()) + '%3A' + z(t.getMinutes()) + '%3A' + z(t.getSeconds());
 
     var dataString = 'cmd_typ=' + cmds[command] + '&cmd_mod=2&host=' + hostname + service_query + '&start_time=' + time + '&force_check=on&submit=Commit';
     jQuery.post(cmd_url, dataString, resetSrc);

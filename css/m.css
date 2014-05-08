@@ -39,8 +39,8 @@ td.tdss {text-align: center}
 thead td {text-align: center; font-weight: bold;}
 
 #totalsHosts th, #totalsServices th {
-  background: #707677;
-  color: white;
+  background: #cacaca;
+/*  color: black;*/
 }
 
 #totalsHosts td, #totalsServices td {
